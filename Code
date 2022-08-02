@@ -1,0 +1,535 @@
+# lear
+# Tank
+
+# Welcome to the Tank game
+# This game is made in pygame
+
+import pygame
+import random as rd
+
+if __name__ == "__main__":
+    pygame.init()
+
+    # Screen
+    WIDTH = 1200
+    HEIGHT = 800
+
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+    # Title
+    pygame.display.set_caption("Tank")
+
+    # Background
+    background = pygame.image.load("tank_bg.jpg")
+
+    # Icon
+    icon = pygame.image.load("tank_icon.png")
+
+    pygame.display.set_icon(icon)
+
+
+    # Tank
+    class Tank:
+        def __init__(self, tank_1, tank_1_X, tank_1_Y, tank_2, tank_2_X, tank_2_Y):
+            self.tank_1 = tank_1
+            self.tank_1_X = tank_1_X
+            self.tank_1_Y = tank_1_Y
+
+            self.tank_2 = tank_2
+            self.tank_2_X = tank_2_X
+            self.tank_2_Y = tank_2_Y
+
+        def get_tank_1(self):
+            screen.blit(self.tank_1, (self.tank_1_X, self.tank_1_Y))
+
+        def get_tank_2(self):
+            screen.blit(self.tank_2, (self.tank_2_X, self.tank_2_Y))
+
+    tank_1_1 = pygame.image.load("tank_1_up.png")
+    tank_1_2 = pygame.image.load("tank_1_down.png")
+    tank_1_3 = pygame.image.load("tank_1_right.png")
+    tank_1_4 = pygame.image.load("tank_1_left.png")
+
+    TANK_1 = tank_1_4
+    tank_1_x = 990
+    tank_1_y = 360
+
+    tank_1_x_movement = 0
+    tank_1_y_movement = 0
+
+
+    tank_2_1 = pygame.image.load("tank_2_up.png")
+    tank_2_2 = pygame.image.load("tank_2_down.png")
+    tank_2_3 = pygame.image.load("tank_2_right.png")
+    tank_2_4 = pygame.image.load("tank_2_left.png")
+
+    TANK_2 = tank_2_3
+    tank_2_x = 130
+    tank_2_y = 360
+
+    tank_2_x_movement = 0
+    tank_2_y_movement = 0
+
+
+    POL = Tank(TANK_1, tank_1_x, tank_1_y, TANK_2, tank_2_x, tank_2_y)
+
+    
+    # Bullet
+    class Bullet:
+        def __init__(self, bullet_1, bullet_1_X, bullet_1_Y, bullet_2, bullet_2_X, bullet_2_Y):
+            self.bullet_1 = bullet_1
+            self.bullet_1_X = bullet_1_X
+            self.bullet_1_Y = bullet_1_Y
+
+            self.bullet_2 = bullet_2
+            self.bullet_2_X = bullet_2_X
+            self.bullet_2_Y = bullet_2_Y
+
+        def get_bullet_1(self):
+            screen.blit(self.bullet_1, (self.bullet_1_X, self.bullet_1_Y))
+
+        def get_bullet_2(self):
+            screen.blit(self.bullet_2, (self.bullet_2_X, self.bullet_2_Y))
+
+    bullet_up = pygame.image.load("tank_bullet_up.png")
+    bullet_down = pygame.image.load("tank_bullet_down.png")
+    bullet_left = pygame.image.load("tank_bullet_left.png")
+    bullet_right = pygame.image.load("tank_bullet_right.png")
+
+    Bullet_1 = bullet_left
+    Bullet_1_X = POL.tank_1_X + 25
+    Bullet_1_Y = POL.tank_1_Y + 25
+    L_1 = False
+    R_1 = False
+    U_1 = False
+    D_1 = False
+
+    Bullet_2 = bullet_right
+    Bullet_2_X = POL.tank_2_X + 25
+    Bullet_2_Y = POL.tank_2_Y + 25
+    L_2 = False
+    R_2 = False
+    U_2 = False
+    D_2 = False
+
+    Fire_1 = False
+    Fire_2 = False
+
+    AMMO = Bullet(Bullet_1, Bullet_1_X, Bullet_1_Y, Bullet_2, Bullet_2_X, Bullet_2_Y)
+
+
+    # Statistics
+    text_score = pygame.font.Font("freesansbold.ttf", 52)
+
+    class Statistics:
+        def __init__(self, score_1, score_2, heart, dark_heart):
+            self.score_1 = score_1
+            self.score_2 = score_2
+            self.heart = heart
+            self.dark_heart = dark_heart
+
+        def get_score_1(self):
+            score_text = text_score.render(f"{self.score_1}", True, (50, 120, 150))
+            screen.blit(score_text, (970, 30))
+
+        def get_score_2(self):
+            score_text = text_score.render(f"{self.score_2}", True, (100, 180, 50))
+            screen.blit(score_text, (200, 30))
+
+
+        def get_heart_1(self):
+            screen.blit(self.heart, (30, 30))
+
+        def get_heart_2(self):
+            screen.blit(self.heart, (70, 30))
+
+        def get_heart_3(self):
+            screen.blit(self.heart, (110, 30))
+
+        def get_dark_heart_1(self):
+            screen.blit(self.dark_heart, (30, 30))
+
+        def get_dark_heart_2(self):
+            screen.blit(self.dark_heart, (70, 30))
+
+        def get_dark_heart_3(self):
+            screen.blit(self.dark_heart, (110, 30))
+
+
+        def get_heart_4(self):
+            screen.blit(self.heart, (1050, 30))
+
+        def get_heart_5(self):
+            screen.blit(self.heart, (1090, 30))
+
+        def get_heart_6(self):
+            screen.blit(self.heart, (1130, 30))
+
+        def get_dark_heart_4(self):
+            screen.blit(self.dark_heart, (1050, 30))
+
+        def get_dark_heart_5(self):
+            screen.blit(self.dark_heart, (1090, 30))
+
+        def get_dark_heart_6(self):
+            screen.blit(self.dark_heart, (1130, 30))
+
+    Score_1 = 0
+    Score_2 = 0
+
+    health_1 = 3
+    health_2 = 3
+
+    Heart = pygame.image.load("heart.png")
+    Dark_heart = pygame.image.load("dark_heart.png")
+
+    STAT = Statistics(Score_1, Score_2, Heart, Dark_heart)
+
+
+    # Special
+    class Special:
+        def __init__(self, coin, coin_X, coin_Y):
+            self.coin = coin
+            self.coin_X = coin_X
+            self.coin_Y = coin_Y
+
+        def get_coin(self):
+            screen.blit(self.coin, (self.coin_X, self.coin_Y))
+
+    Coin = pygame.image.load("coin.png")
+    Coin_x = rd.randint(100, 1100)
+    Coin_y = rd.randint(100, 700)
+
+    SPEC = Special(Coin, Coin_x, Coin_y)        
+
+
+    # Ending
+    end_text = pygame.font.Font("freesansbold.ttf", 62)
+
+    class Ending:
+        def __init__(self, win_1, win_2):
+            self.win_1 = win_1
+            self.win_2 = win_2
+
+        def get_win_1(self):
+            win_1_text = end_text.render(self.win_1, True, (50, 50, 160))
+            screen.blit(win_1_text, (440, 200))
+
+        def get_win_2(self):
+            win_2_text = end_text.render(self.win_2, True, (50, 80, 50))
+            screen.blit(win_2_text, (420, 200))
+
+    Winner_1 = "Blue Wins!"
+    Winner_2 = "Green Wins!"
+
+    END = Ending(Winner_1, Winner_2)
+
+
+    # Sound
+    WINNING = pygame.mixer.Sound("TTT_win.wav")
+    HITTING = pygame.mixer.Sound("enemy_hitted.wav")
+    SHOOTING_1 = pygame.mixer.Sound("bullet_shooting.wav")
+    SHOOTING_2 =  pygame.mixer.Sound("enemy_bullet_shooting.wav")
+    SCORE_UP = pygame.mixer.Sound("score_gaining.wav")
+
+
+    all = True
+    running = True
+    while running:
+        screen.blit(background, (0, 0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+            # Controlling
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+                
+                if all:
+                    if event.key == pygame.K_LEFT and POL.tank_1_X > 0:
+                        tank_1_x_movement = -0.7
+                        tank_1_y_movement = 0
+                        POL.tank_1 = tank_1_4
+                        
+                        if not(Fire_1):
+                            L_1 = True
+                            R_1 = False
+                            U_1 = False
+                            D_1 = False
+
+                    if event.key == pygame.K_RIGHT and POL.tank_1_X < 1110:
+                        tank_1_x_movement = 0.7
+                        tank_1_y_movement = 0
+                        POL.tank_1 = tank_1_3
+
+                        if not(Fire_1):
+                            L_1 = False
+                            R_1 = True
+                            U_1 = False
+                            D_1 = False
+
+                    if event.key == pygame.K_UP and POL.tank_1_Y > 0:
+                        tank_1_y_movement = -0.7
+                        tank_1_x_movement = 0
+                        POL.tank_1 = tank_1_1
+
+                        if not(Fire_1):
+                            L_1 = False
+                            R_1 = False
+                            U_1 = True
+                            D_1 = False
+
+                    if event.key == pygame.K_DOWN and POL.tank_1_Y < 710:
+                        tank_1_y_movement = 0.7
+                        tank_1_x_movement = 0
+                        POL.tank_1 = tank_1_2
+
+                        if not(Fire_1):
+                            L_1 = False
+                            R_1 = False
+                            U_1 = False
+                            D_1 = True
+
+                    if event.key == pygame.K_a and POL.tank_2_X > 0:
+                        tank_2_x_movement = -0.7
+                        tank_2_y_movement = 0
+                        POL.tank_2 = tank_2_4
+
+                        if not(Fire_2):
+                            L_2 = True
+                            R_2 = False
+                            U_2 = False
+                            D_2 = False
+
+                    if event.key == pygame.K_d and POL.tank_2_X < 1110:
+                        tank_2_x_movement = 0.7
+                        tank_2_y_movement = 0
+                        POL.tank_2 = tank_2_3
+
+                        if not(Fire_2):
+                            L_2 = False
+                            R_2 = True
+                            U_2 = False
+                            D_2 = False
+
+                    if event.key == pygame.K_w and POL.tank_2_Y > 0:
+                        tank_2_y_movement = -0.7
+                        tank_2_x_movement = 0
+                        POL.tank_2 = tank_2_1
+
+                        if not(Fire_2):
+                            L_2 = False
+                            R_2 = False
+                            U_2 = True
+                            D_2 = False
+
+                    if event.key == pygame.K_s and POL.tank_2_Y < 710:
+                        tank_2_y_movement = 0.7
+                        tank_2_x_movement = 0
+                        POL.tank_2 = tank_2_2
+
+                        if not(Fire_2):
+                            L_2 = False
+                            R_2 = False
+                            U_2 = False
+                            D_2 = True
+
+                    if event.key == pygame.K_m:
+                        Fire_1 = True
+                        SHOOTING_1.play()
+
+                    if event.key == pygame.K_g:
+                        Fire_2 = True
+                        SHOOTING_2.play()
+
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    tank_1_x_movement = 0
+
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    tank_1_y_movement = 0
+
+                if event.key == pygame.K_a or event.key == pygame.K_d:
+                    tank_2_x_movement = 0
+
+                if event.key == pygame.K_w or event.key == pygame.K_s:
+                    tank_2_y_movement = 0
+
+
+        # Tank and Bullet Movement
+        POL.tank_1_X += tank_1_x_movement
+        POL.tank_1_Y += tank_1_y_movement
+
+        if not(Fire_1):
+            AMMO.bullet_1_X += tank_1_x_movement
+            AMMO.bullet_1_Y += tank_1_y_movement
+
+        POL.tank_2_X += tank_2_x_movement
+        POL.tank_2_Y += tank_2_y_movement
+
+        if not(Fire_2):
+            AMMO.bullet_2_X += tank_2_x_movement
+            AMMO.bullet_2_Y += tank_2_y_movement
+
+
+        if POL.tank_1_X < 0 or POL.tank_1_X > 1110:
+            tank_1_x_movement = 0
+
+        if POL.tank_1_Y < 0 or POL.tank_1_Y > 710:
+            tank_1_y_movement = 0
+
+        if POL.tank_2_X < 0 or POL.tank_2_X > 1110:
+            tank_2_x_movement = 0
+
+        if POL.tank_2_Y < 0 or POL.tank_2_Y > 710:
+            tank_2_y_movement = 0
+
+        if AMMO.bullet_1_X < -1 or AMMO.bullet_1_X > 1200 or AMMO.bullet_1_Y < -10 or AMMO.bullet_1_Y > 800:
+            AMMO.bullet_1_X = POL.tank_1_X + 25
+            AMMO.bullet_1_Y = POL.tank_1_Y + 25
+            Fire_1 = False
+
+        if AMMO.bullet_2_X < -1 or AMMO.bullet_2_X > 1200 or AMMO.bullet_2_Y < -10 or AMMO.bullet_2_Y > 800:
+            AMMO.bullet_2_X = POL.tank_2_X + 25
+            AMMO.bullet_2_Y = POL.tank_2_Y + 25
+            Fire_2 = False
+
+        # Bullet Fire
+        if Fire_1:
+            if L_1:
+                AMMO.bullet_1 = bullet_left
+                AMMO.bullet_1_X -= 1.2
+
+            if R_1:
+                AMMO.bullet_1 = bullet_right
+                AMMO.bullet_1_X += 1.2
+
+            if U_1:
+                AMMO.bullet_1 = bullet_up
+                AMMO.bullet_1_Y -= 1.2
+
+            if D_1:
+                AMMO.bullet_1 = bullet_down
+                AMMO.bullet_1_Y += 1.2
+
+        if Fire_2:
+            if L_2:
+                AMMO.bullet_2 = bullet_left
+                AMMO.bullet_2_X -= 1.2
+
+            if R_2:
+                AMMO.bullet_2 = bullet_right
+                AMMO.bullet_2_X += 1.2
+
+            if U_2:
+                AMMO.bullet_2 = bullet_up
+                AMMO.bullet_2_Y -= 1.2
+
+            if D_2:
+                AMMO.bullet_2 = bullet_down
+                AMMO.bullet_2_Y += 1.2
+
+        # Hitting
+        if AMMO.bullet_1_X > POL.tank_2_X + 20 and AMMO.bullet_1_X < POL.tank_2_X + 60 and AMMO.bullet_1_Y > POL.tank_2_Y + 20 and AMMO.bullet_1_Y < POL.tank_2_Y + 60:
+            AMMO.bullet_1_X = POL.tank_1_X + 25
+            AMMO.bullet_1_Y = POL.tank_1_Y + 25
+            HITTING.play()
+            health_1 -= 1
+            STAT.score_1 += 1
+
+            Fire_1 = False
+
+        if AMMO.bullet_2_X > POL.tank_1_X + 20 and AMMO.bullet_2_X < POL.tank_1_X + 60 and AMMO.bullet_2_Y > POL.tank_1_Y + 20 and AMMO.bullet_2_Y < POL.tank_1_Y + 60:
+            AMMO.bullet_2_X = POL.tank_2_X + 25
+            AMMO.bullet_2_Y = POL.tank_2_Y + 25
+            HITTING.play()
+            health_2 -= 1
+            STAT.score_2 += 1
+
+            Fire_2 = False
+
+        if SPEC.coin_X > POL.tank_1_X + 10 and SPEC.coin_X < POL.tank_1_X + 50 and SPEC.coin_Y > POL.tank_1_Y + 10 and SPEC.coin_Y < POL.tank_1_Y + 50:
+            STAT.score_1 += 1
+            SPEC.coin_X = rd.randint(100, 1100)
+            SPEC.coin_Y = rd.randint(100, 700)
+
+            SCORE_UP.play()
+
+        if SPEC.coin_X > POL.tank_2_X + 10 and SPEC.coin_X < POL.tank_2_X + 50 and SPEC.coin_Y > POL.tank_2_Y + 10 and SPEC.coin_Y < POL.tank_2_Y + 50:
+            STAT.score_2 += 1
+            SPEC.coin_X = rd.randint(100, 1100)
+            SPEC.coin_Y = rd.randint(100, 700)
+
+            SCORE_UP.play()
+
+        # Animation
+        SPEC.get_coin()
+        AMMO.get_bullet_1()
+        AMMO.get_bullet_2()
+        POL.get_tank_1()
+        POL.get_tank_2()
+
+        # HP
+        # Player 1
+        if health_1 == 3:
+            STAT.get_heart_1()
+            STAT.get_heart_2()
+            STAT.get_heart_3()
+
+        elif health_1 == 2:
+            STAT.get_heart_1()
+            STAT.get_heart_2()
+            STAT.get_dark_heart_3()
+
+        elif health_1 == 1:
+            STAT.get_heart_1()
+            STAT.get_dark_heart_2()
+            STAT.get_dark_heart_3()
+
+        else:
+            STAT.get_dark_heart_1()
+            STAT.get_dark_heart_2()
+            STAT.get_dark_heart_3()
+            END.get_win_1()
+
+            all = False
+
+        # Player 2
+        if health_2 == 3:
+            STAT.get_heart_4()
+            STAT.get_heart_5()
+            STAT.get_heart_6()
+
+        elif health_2 == 2:
+            STAT.get_dark_heart_4()
+            STAT.get_heart_5()
+            STAT.get_heart_6()
+
+        elif health_2 == 1:
+            STAT.get_dark_heart_4()
+            STAT.get_dark_heart_5()
+            STAT.get_heart_6()
+
+        else:
+            STAT.get_dark_heart_4()
+            STAT.get_dark_heart_5()
+            STAT.get_dark_heart_6()
+            END.get_win_2()
+
+            all = False
+
+        if STAT.score_1 == 10:
+            END.get_win_1()
+            all = False
+
+        elif STAT.score_2 == 10:
+            END.get_win_2()
+            all = False
+
+        STAT.get_score_1()
+        STAT.get_score_2()
+
+        pygame.display.update()
